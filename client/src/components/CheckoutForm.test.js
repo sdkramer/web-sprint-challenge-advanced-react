@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, getByTestId } from "@testing-library/react";
 import CheckoutForm from "./CheckoutForm";
 import App from '../App';
 
@@ -10,7 +10,14 @@ test('renders App without crashing', () => {
 // Write up the two tests here and make sure they are testing what the title shows
 
 test("form header renders", () => {
-  render(<CheckoutForm />);
+  const { getByText } = render(<App />);
+  const header = getByText(/react plants/i);
+  expect(header).toBeInTheDocument();
 });
 
-test("form shows success message on submit with form details", () => {});
+test("form shows success message on submit with form details", async () => {
+  const { getByTestId } = render(<CheckoutForm />);
+  const button = getByTestId("checkout-button");
+  fireEvent.click(button);
+  getByTestId("successMessage");
+});
